@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NiteCoin - The Future of Night-Powered Currency</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #ffffff;
+      position: relative;
+    }
+
+    /* Video Background */
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    /* Overlay for better text readability */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Content Container */
+    .content {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* NAVIGATION */
+    nav {
+      width: 100%;
+      padding: 20px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav .logo {
+      font-size: clamp(40px, 7vw, 56px);
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      letter-spacing: 2px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    nav .logo .n-symbol {
+      height: 150px;
+      width: auto;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6));
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+      margin-right: 0;
+      object-fit: contain;
+      object-position: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    nav .logo span {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: -100px;
+      letter-spacing: 2px;
+      position: relative;
+      z-index: 2;
+    }
+
+    nav .menu {
+      display: flex;
+      gap: clamp(20px, 4vw, 40px);
+      font-size: clamp(16px, 2.5vw, 22px);
+      font-weight: 600;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    nav .menu a {
+      color: #ffffff;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    nav .menu a:hover,
+    nav .menu a.active {
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Page Sections */
+    .page-section {
+      display: none;
+      flex: 1;
+      padding: 40px 20px;
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    .page-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Main Content */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: clamp(36px, 8vw, 64px);
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: clamp(28px, 6vw, 48px);
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: clamp(16px, 2.5vw, 20px);
+      color: #ffffff;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+      max-width: 900px;
+      margin: 0 auto 20px;
+      line-height: 1.6;
+    }
+
+    /* GIGANTIC NiteCoin PNG - centered */
+    .gigantic-coin {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      width: clamp(200px, 40vw, 400px);
+      max-width: 80vw;
+      filter:
+        drop-shadow(0 0 28px rgba(255, 255, 255, 0.6))
+        drop-shadow(0 0 80px rgba(255, 255, 255, 0.4));
+      animation: pulse-coin 6s infinite ease-in-out;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    @keyframes pulse-coin {
+      0%, 100% { 
+        filter: drop-shadow(0 0 28px rgba(255, 255, 255, 0.6)) 
+                drop-shadow(0 0 80px rgba(255, 255, 255, 0.4));
+      }
+      50% { 
+        filter: drop-shadow(0 0 38px rgba(255, 255, 255, 0.8)) 
+                drop-shadow(0 0 120px rgba(255, 255, 255, 0.6));
+      }
+    }
+
+    /* About Page Styles */
+    .about-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .about-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 25px;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .spec-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .spec-card h4 {
+      font-size: clamp(18px, 3vw, 24px);
+      color: #ffffff;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    }
+
+    .spec-card p {
+      font-size: clamp(14px, 2vw, 18px);
+      margin: 0;
+    }
+
+    /* Shop Page Styles */
+    .shop-content {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 30px;
+      width: 100%;
+    }
+
+    .shop-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .shop-card:hover {
+      transform: translateY(-10px);
+      border-color: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+    }
+
+    .shop-card h3 {
+      margin-bottom: 15px;
+    }
+
+    .price {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+      margin: 15px 0;
+    }
+
+    .buy-button {
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid #ffffff;
+      color: #ffffff;
+      padding: 12px 30px;
+      font-size: clamp(16px, 2.5vw, 20px);
+      font-weight: bold;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .buy-button:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+      box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .features-list {
+      list-style: none;
+      text-align: left;
+      margin: 20px 0;
+      width: 100%;
+    }
+
+    .features-list li {
+      padding: 10px 0;
+      font-size: clamp(14px, 2vw, 18px);
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .features-list li:before {
+      content: "✓ ";
+      color: #ffffff;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    /* Contact Page Styles */
+    .contact-content {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: clamp(14px, 2vw, 18px);
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .contact-form textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .contact-form button {
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid #ffffff;
+      color: #ffffff;
+      padding: 15px 30px;
+      font-size: clamp(16px, 2.5vw, 20px);
+      font-weight: bold;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .contact-form button:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    /* Social Links Styles */
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: clamp(16px, 2.5vw, 20px);
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    }
+
+    .social-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.6);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .social-link svg {
+      width: 24px;
+      height: 24px;
+      fill: #ffffff;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+    }
+
+    /* Flying Nitecoin Coins */
+    .flying-coins {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      overflow: visible;
+    }
+
+    .coin-float {
+      position: absolute;
+      width: clamp(48px, 8vw, 96px);
+      height: clamp(48px, 8vw, 96px);
+      will-change: transform, opacity;
+      animation: flyCoinUp linear infinite;
+    }
+
+    @keyframes flyCoinUp {
+      from {
+        transform: translateY(var(--startY)) scale(var(--scale)) rotate(0deg);
+        opacity: 0.2;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      to {
+        transform: translateY(var(--endY)) scale(var(--scale)) rotate(360deg);
+        opacity: 0.1;
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      nav {
+        padding: 15px 0;
+      }
+
+      nav .menu {
+        gap: 15px;
+        font-size: 16px;
+      }
+
+      .page-section {
+        padding: 30px 15px;
+      }
+
+      .about-content,
+      .shop-content {
+        grid-template-columns: 1fr;
+      }
+
+      .gigantic-coin {
+        width: clamp(150px, 50vw, 300px);
+      }
+    }
+
+    @media (max-width: 480px) {
+      nav .logo {
+        font-size: 28px;
+      }
+
+      nav .menu {
+        gap: 10px;
+        font-size: 14px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      p {
+        font-size: 16px;
+      }
+    }
+
+    /* Landscape mobile optimization */
+    @media (max-height: 500px) and (orientation: landscape) {
+      nav {
+        padding: 10px 0;
+      }
+
+      .gigantic-coin {
+        width: clamp(100px, 30vh, 200px);
+      }
+
+      .page-section {
+        padding: 20px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Video Background -->
+  <video class="video-background" autoplay muted loop playsinline>
+    <source src="NiteCoin - Legend.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Overlay for text readability -->
+  <div class="overlay"></div>
+
+  <!-- Content Container -->
+  <div class="content">
+    <!-- NAVIGATION -->
+    <nav>
+      <div class="logo">
+        <img src="Nitecoin%20Golden%20N.png" alt="N" class="n-symbol" />
+        <span>iteCoin</span>
+      </div>
+      <div class="menu">
+        <a href="#" data-page="home" class="active">Home</a>
+        <a href="#" data-page="about">About</a>
+        <a href="#" data-page="shop">Shop</a>
+        <a href="#" data-page="contact">Contact Us</a>
+      </div>
+    </nav>
+
+    <!-- Page Sections -->
+    <main>
+      <!-- Home Page -->
+      <section id="home" class="page-section active">
+        <h1>Welcome to NiteCoin</h1>
+        <p>The future of night‑powered currency.</p>
+        <p>Experience the revolution in digital and physical cryptocurrency. NiteCoin combines cutting-edge blockchain technology with luxurious physical assets, creating a unique investment opportunity that bridges the digital and tangible worlds.</p>
+      </section>
+
+      <!-- About Page -->
+      <section id="about" class="page-section">
+        <h2>About NiteCoin</h2>
+        <p>NiteCoin is a revolutionary cryptocurrency that combines the power of blockchain technology with the luxury of physical precious metals and gemstones. Inspired by the success of Bitcoin and LiteCoin, NiteCoin offers a unique dual-asset approach to cryptocurrency investment.</p>
+        
+        <div class="about-content">
+          <div class="about-card">
+            <h3>What is NiteCoin?</h3>
+            <p>NiteCoin (NTC) is a decentralized digital currency that operates on a peer-to-peer network, similar to Bitcoin and LiteCoin. It uses advanced cryptographic techniques to secure transactions and control the creation of new units. NiteCoin transactions are verified by network nodes through cryptography and recorded in a public distributed ledger called a blockchain.</p>
+          </div>
+          
+          <div class="about-card">
+            <h3>Key Features</h3>
+            <ul class="features-list">
+              <li>Fast transaction processing (2.5 minute block time)</li>
+              <li>Low transaction fees</li>
+              <li>Decentralized and secure blockchain network</li>
+              <li>Proof-of-Stake consensus mechanism</li>
+              <li>Limited supply of 84 million coins</li>
+              <li>Backed by physical gold and diamond assets</li>
+            </ul>
+          </div>
+          
+          <div class="about-card">
+            <h3>Technology</h3>
+            <p>NiteCoin utilizes a hybrid consensus mechanism combining Proof-of-Stake (PoS) for energy efficiency and security. The network is designed to handle high transaction volumes while maintaining low fees and fast confirmation times. Our blockchain technology ensures transparency, security, and immutability of all transactions.</p>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 40px;">Physical Coin Specifications</h3>
+        <div class="specs-grid">
+          <div class="spec-card">
+            <h4>Gold Content</h4>
+            <p><strong>24 Karat (999.9 Fine Gold)</strong></p>
+            <p>The highest purity gold available, ensuring maximum value and investment quality. Each NiteCoin physical coin contains premium 24K gold, making it one of the finest gold coins in the cryptocurrency market.</p>
+          </div>
+          
+          <div class="spec-card">
+            <h4>Diamond Specifications</h4>
+            <p><strong>1.5 Carat Total Weight</strong></p>
+            <p>Each physical NiteCoin features premium diamonds totaling 1.5 carats. The diamonds are VS1 clarity grade (Very Slightly Included) with F color rating (Near Colorless), representing exceptional quality and brilliance.</p>
+          </div>
+          
+          <div class="spec-card">
+            <h4>Coin Details</h4>
+            <p><strong>Weight:</strong> 31.1 grams (1 Troy Ounce)</p>
+            <p><strong>Diameter:</strong> 40mm</p>
+            <p><strong>Thickness:</strong> 3mm</p>
+            <p><strong>Finish:</strong> Proof Quality with Diamond Inlay</p>
+          </div>
+          
+          <div class="spec-card">
+            <h4>Certification</h4>
+            <p>Each physical NiteCoin comes with:</p>
+            <ul class="features-list" style="margin-top: 10px;">
+              <li>Certificate of Authenticity</li>
+              <li>Gold Purity Certification</li>
+              <li>Diamond Grading Report (GIA)</li>
+              <li>Blockchain Verification Code</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Shop Page -->
+      <section id="shop" class="page-section">
+        <h2>Shop NiteCoin</h2>
+        <p>Purchase NiteCoin cryptocurrency tokens</p>
+        
+        <div class="shop-content">
+          <div class="shop-card">
+            <h3>Digital NiteCoin</h3>
+            <p>Purchase NiteCoin cryptocurrency tokens</p>
+            <div class="price">$0.85 / NTC</div>
+            <ul class="features-list">
+              <li>Instant digital delivery</li>
+              <li>Store in secure wallet</li>
+              <li>Trade on exchanges</li>
+              <li>Stake for rewards</li>
+              <li>Low transaction fees</li>
+              <li>24/7 global access</li>
+            </ul>
+            <button class="buy-button" onclick="alert('Digital purchase coming soon!')">Buy Digital NiteCoin</button>
+          </div>
+
+          <div class="shop-card">
+            <h3>Physical NiteCoin</h3>
+            <p>Reserve a limited edition collector's coin.</p>
+            <div class="price">$10,000</div>
+            <ul class="features-list">
+              <li>Precision-crafted heirloom finish</li>
+              <li>Serialised ownership record</li>
+              <li>Secure custodian release process</li>
+              <li>Concierge delivery coordination</li>
+            </ul>
+            <button class="buy-button" type="button" onclick="document.querySelector('nav .menu a[data-page=&#34;contact&#34;]').click();">Reserve Physical NiteCoin</button>
+          </div>
+        </div>
+
+        <div style="margin-top: 30px;">
+          <button class="buy-button" type="button" onclick="document.querySelector('nav .menu a[data-page=&#34;contact&#34;]').click();">
+            Talk to the NiteCoin Team
+          </button>
+        </div>
+      </section>
+
+      <!-- Contact Page -->
+      <section id="contact" class="page-section">
+        <h2>Contact Us</h2>
+        <p>Have questions about NiteCoin? We're here to help!</p>
+        
+        <div class="social-links">
+          <a href="https://x.com/Nite_Coin" target="_blank" rel="noopener noreferrer" class="social-link">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+            <span>Twitter</span>
+          </a>
+          <a href="https://t.me/+qvlMr6SwcEBhNzRk" target="_blank" rel="noopener noreferrer" class="social-link">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+            </svg>
+            <span>Telegram</span>
+          </a>
+        </div>
+        <p style="margin-top: 20px;">Need something specific? Our team monitors Twitter DMs and Telegram around the clock.</p>
+      </section>
+    </main>
+  </div>
+
+  <!-- Flying coins container -->
+  <div class="flying-coins" id="flyingCoins"></div>
+
+  <script>
+    // Page Navigation
+    const navLinks = document.querySelectorAll('nav .menu a[data-page]');
+    const sections = document.querySelectorAll('.page-section');
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetPage = link.getAttribute('data-page');
+        
+        // Remove active class from all links and sections
+        navLinks.forEach(l => l.classList.remove('active'));
+        sections.forEach(s => s.classList.remove('active'));
+        
+        // Add active class to clicked link and corresponding section
+        link.classList.add('active');
+        document.getElementById(targetPage).classList.add('active');
+      });
+    });
+
+    // Flying Coin Generator - Uses both N symbol and Coin
+    const N_SYMBOL_SPRITE = "Nitecoin Golden N.png";
+    const COIN_SPRITE = "NiteCoin.png";
+    const COIN_NUM = 18;
+    const coinsCont = document.getElementById("flyingCoins");
+    const vw = () => Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const vh = () => Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+    function randomCoin(index) {
+      const x = Math.random() * (vw() - 50);
+      const delay = Math.random() * 10;
+      const duration = 7 + Math.random() * 7;
+      const scale = 0.5 + Math.random() * 1.0;
+      // Alternate between N symbol and coin
+      const useNSymbol = Math.random() > 0.5;
+      const spriteSrc = useNSymbol ? N_SYMBOL_SPRITE : COIN_SPRITE;
+      const coin = document.createElement('img');
+      coin.src = spriteSrc;
+      coin.className = 'coin-float';
+      coin.style.left = `${x}px`;
+      coin.style.bottom = `-70px`;
+      coin.style.setProperty('--startY', `${vh()}px`);
+      coin.style.setProperty('--endY', `-${70 + Math.random()*100}px`);
+      coin.style.setProperty('--scale', scale);
+      coin.style.animationDuration = `${duration}s`;
+      coin.style.animationDelay = `${delay}s`;
+      coin.style.opacity = 0.75 + 0.25 * Math.random();
+      // Apply glow effect to both N symbol and coin
+      coin.style.filter = `drop-shadow(0 0 12px rgba(255, 255, 255, 0.4))`;
+      coin.setAttribute('aria-hidden', 'true');
+      coin.addEventListener('animationend', e => {
+        e.target.remove();
+        setTimeout(() => coinsCont.appendChild(randomCoin(index)), 300 + Math.random()*700);
+      });
+      return coin;
+    }
+
+    // Initial fill of coins
+    for(let i=0; i<COIN_NUM; i++) {
+      coinsCont.appendChild(randomCoin(i));
+    }
+
+    // Responsive: Regenerate coins on resize
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        coinsCont.innerHTML = '';
+        for(let i=0; i<COIN_NUM; i++) {
+          coinsCont.appendChild(randomCoin(i));
+        }
+      }, 500);
+    });
+
+    // Ensure video plays on mobile devices
+    const video = document.querySelector('.video-background');
+    video.addEventListener('loadedmetadata', () => {
+      video.play().catch(err => {
+        console.log('Video autoplay prevented:', err);
+      });
+    });
+  </script>
+</body>
+</html>
